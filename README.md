@@ -1,7 +1,11 @@
-# cuda-aware-mpi-cluster-setup
+# cuda-aware-mpi-cluster
 
 Tutorial how to set up a CUDA-aware MPI (mini) cluster for testing
-and development
+and development.
+
+If successfull, MPI API calls should have directed access to the GPU
+memory, bypassing the need to copy the data to RAM with CPU.  That 
+should significantly reduce simulation time of distributed quantum state.
 
 # References
 
