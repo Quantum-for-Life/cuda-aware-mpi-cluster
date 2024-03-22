@@ -668,7 +668,7 @@ git clone https://github.com/NVIDIA-developer-blog/code-samples.git
 cd code-samples/posts/cuda-aware-mpi-example/src/
 ```
 
-Modify the file: `Jacobi.h'. Change the line:
+Modify the file: `Jacobi.h`. Change the line:
 
 ```c
 #define ENV_LOCAL_RANK               "MV2_COMM_WORLD_LOCAL_RANK"
@@ -755,7 +755,7 @@ Measured device bandwidth: 1.42 TB/s (total), 355.51 GB/s (per process)
 What's important here is not the bandwidth (see the blog post for explanation),
 but rather that the CUDA-aware program doesn't segfault.  If MPI didn't have
 direct access to the GPU memory, the pointers to CUDA arrays would have been
-invalid. 🎆🎉
+invalid. 🎆 🎉
 
 
 [NVIDIA blog]: https://developer.nvidia.com/blog/benchmarking-cuda-aware-mpi/
