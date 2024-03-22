@@ -1,7 +1,7 @@
 # cuda-aware-mpi-cluster
 
-Tutorial how to set up a CUDA-aware MPI (mini) cluster for testing
-and development.
+This is a tutorial how to set up a CUDA-aware MPI (mini) cluster 
+for testing and development.
 
 If successfull, MPI API calls should have directed access to the GPU
 memory, bypassing the need to copy the data to RAM with CPU.  That 
@@ -24,7 +24,7 @@ Specs:
 * 128 GB SSD 
 * Ubuntu 22.04 LTS  
 
-Estimated cost: 1.86 USD / hour
+Estimated cost: 1.86 USD / hour (on demand).
 
 
 # Dependencies
