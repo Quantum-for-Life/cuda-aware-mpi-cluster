@@ -53,7 +53,7 @@ Supported LTO compression algorithms: zlib zstd
 gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04)
 ```
 
-# CUDA
+## CUDA
 
 We follow the [official guide].  Quotes from the guide in italics.
 
@@ -655,3 +655,109 @@ Memory debugging support: no
 [Open MPI]: https://www-lb.open-mpi.org/
 [Open MPI CUDA guide]: https://www-lb.open-mpi.org/faq/?category=buildcuda
 [ompi-cuda-faq]: https://www-lb.open-mpi.org/faq/?category=runcuda
+
+
+# Benchmark
+
+Follow an example from NVIDIA blog: *[Benchmarking CUDA-Aware MPI][NVIDIA blog]*.
+
+Download the sources:
+
+```bash
+git clone https://github.com/NVIDIA-developer-blog/code-samples.git
+cd code-samples/posts/cuda-aware-mpi-example/src/
+```
+
+Modify the file: `Jacobi.h'. Change the line:
+
+```c
+#define ENV_LOCAL_RANK               "MV2_COMM_WORLD_LOCAL_RANK"
+```
+
+to:
+
+```c
+#define ENV_LOCAL_RANK          "OMPI_COMM_WORLD_LOCAL_RANK"
+```
+
+Compile the source code:
+
+```bash
+export CUDA_INSTALL_PATH=/usr/local/cuda
+export MPI_HOME=/usr/local/
+make
+cd ../bin
+```
+
+Run the program in normal MPI mode:
+
+```bash
+mpirun -n 4 ./jacobi_cuda_normal_mpi -t 2 2
+```
+
+Our output:
+
+```text
+Topology size: 2 x 2
+Local domain size (current node): 4096 x 4096
+Global domain size (all nodes): 8192 x 8192
+Starting Jacobi run with 4 processes using "Tesla T4" GPUs (ECC enabled: 4 / 4):
+Iteration: 0 - Residue: 0.250000
+Iteration: 100 - Residue: 0.002397
+Iteration: 200 - Residue: 0.001204
+Iteration: 300 - Residue: 0.000804
+Iteration: 400 - Residue: 0.000603
+Iteration: 500 - Residue: 0.000483
+Iteration: 600 - Residue: 0.000403
+Iteration: 700 - Residue: 0.000345
+Iteration: 800 - Residue: 0.000302
+Iteration: 900 - Residue: 0.000269
+Stopped after 1000 iterations with residue 0.000242
+Total Jacobi run time: 2.8496 sec.
+Average per-process communication time: 0.1287 sec.
+Measured lattice updates: 23.54 GLU/s (total), 5.88 GLU/s (per process)
+Measured FLOPS: 117.69 GFLOPS (total), 29.42 GFLOPS (per process)
+Measured device bandwidth: 1.51 TB/s (total), 376.62 GB/s (per process)
+```
+
+And in CUDA-aware MPI mode:
+
+```bash
+mpirun -n 4 ./jacobi_cuda_aware_mpi -t 2 2
+```
+
+Output:
+
+```text
+Topology size: 2 x 2
+Local domain size (current node): 4096 x 4096
+Global domain size (all nodes): 8192 x 8192
+Starting Jacobi run with 4 processes using "Tesla T4" GPUs (ECC enabled: 4 / 4):
+Iteration: 0 - Residue: 0.250000
+Iteration: 100 - Residue: 0.002397
+Iteration: 200 - Residue: 0.001204
+Iteration: 300 - Residue: 0.000804
+Iteration: 400 - Residue: 0.000603
+Iteration: 500 - Residue: 0.000483
+Iteration: 600 - Residue: 0.000403
+Iteration: 700 - Residue: 0.000345
+Iteration: 800 - Residue: 0.000302
+Iteration: 900 - Residue: 0.000269
+Stopped after 1000 iterations with residue 0.000242
+Total Jacobi run time: 3.0188 sec.
+Average per-process communication time: 0.2865 sec.
+Measured lattice updates: 22.22 GLU/s (total), 5.55 GLU/s (per process)
+Measured FLOPS: 111.10 GFLOPS (total), 27.77 GFLOPS (per process)
+Measured device bandwidth: 1.42 TB/s (total), 355.51 GB/s (per process)
+```
+
+
+What's important here is not the bandwidth (see the blog post for explanation),
+but rather that the CUDA-aware program doesn't segfault.  If MPI didn't have
+direct access to the GPU memory, the pointers to CUDA arrays would have been
+invalid. 🎆🎉
+
+
+[NVIDIA blog]: https://developer.nvidia.com/blog/benchmarking-cuda-aware-mpi/
+
+
