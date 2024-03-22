@@ -22,7 +22,7 @@ Virtual machine on Google Cloud.
 Specs:
 
 * 12 CPU (x86_64)
-* 78 GB RAM (64 GB to cover GPU memory + 12 GB)
+* 78 GB RAM (64 GB to cover GPU memory + 14 GB)
 * 4 NVIDIA Tesla T4 (16 GB GDDR6 memory each)
 * 128 GB SSD 
 * Ubuntu 22.04 LTS  
