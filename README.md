@@ -5,12 +5,15 @@ for testing and development.
 
 If successfull, MPI API calls should have directed access to the GPU
 memory, bypassing the need to copy the data to RAM with CPU.  That 
-should significantly reduce simulation time of distributed quantum state.
+should significantly reduce the simulation time of a distributed 
+quantum state.
+
 
 # References
 
 * [GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
-
+* [An Introduction to CUDA-Aware MPI](https://developer.nvidia.com/blog/introduction-cuda-aware-mpi/)
+* 
 
 # Hardware
 
